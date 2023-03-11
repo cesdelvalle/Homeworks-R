@@ -1,0 +1,163 @@
+#Estructura de una función
+```{r}
+
+funcion1 <- function(x,y) {
+  
+} 
+
+
+```
+#Ejemplo de función
+
+```{r}
+
+Par_impar <- function(x) {
+  if (x %% 2 == 0) {
+    resultado <- "par"
+  } else {
+    resultado <- "impar"
+  }
+  return(resultado)
+}
+
+x <- 301
+verificar_paridad(x) 
+
+```
+#Argumentos de una función
+```{r}
+
+suma_argumentos <- function(Argumento_1, Argumento_2, Argumento_3) {
+  resultado <- Argumento_1 + Argumento_2 - Argumento_3
+  return(resultado)
+}
+
+suma_argumentos(10, 15, 20) 
+```
+#Argumentos por valor
+```{r}
+duplicar <- function(x) {
+  x <- x * 2
+  return(x)
+}
+
+
+a <- 14
+b <- 8
+duplicar(a) 
+duplicar(b) 
+a 
+b 
+
+```
+#lapply
+```{r}
+lapply(lista, funcion, ...)
+
+```
+#Uso de lapply con funciones
+```{r}
+
+lista1 <- list(1:10, 11:20, 21:30)
+
+suma <- function(x) {
+  return(sum(x))
+}
+
+
+resultados <- lapply(lista1, suma)
+
+resultados
+
+```
+#sapply
+
+```{r}
+sapply(lista, funcion, ..., simplify = TRUE)
+
+```
+#Uso de sapply con funciones
+```{r}
+
+lista2 <- list(1:10, 11:20, 21:30)
+
+suma2 <- function(x) {
+  return(sum(x))
+}
+
+
+resultados2 <- sapply(lista2, suma2)
+
+resultados2
+
+```
+#vapply
+
+```{r}
+vapply(lista, funcion, FUN.VALUE, ..., USE.NAMES = TRUE)
+
+```
+#Uso de vapply con funciones
+```{r}
+
+lista3 <- list(1:10, 11:20, 21:30)
+
+suma3 <- function(x) {
+  return(sum(x))
+}
+
+
+resultado3 <- vapply(lista3, suma3, FUN.VALUE = double(1))
+
+resultado3
+
+```
+#Uso de vapply con funciones
+```{r}
+
+df <- data.frame(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+
+
+suma4 <- function(x) {
+  return(sum(x))
+}
+
+
+resultados4 <- vapply(df, suma4, FUN.VALUE = numeric(1))
+
+
+resultados4
+
+
+
+```
+
+
+```{r}
+
+
+lista5 <- list(a = c(1, 2, 3), b = c(4, 5), c = c(6))
+
+# Aplicamos la función mean utilizando lapply
+lapply_resultado <- lapply(lista5, mean)
+
+# Aplicamos la función mean utilizando sapply
+sapply_resultado <- sapply(lista5, mean)
+
+# Aplicamos la función mean utilizando vapply
+vapply_resultado <- vapply(lista5, mean, FUN.VALUE = numeric(1))
+
+lista5
+lapply_resultado
+sapply_resultado
+vapply_resultado
+
+```
+```{r}
+
+
+x <- matrix(1:6, ncol = 2)
+vapply(x, sum, FUN.VALUE = numeric(1))
+
+```
+
