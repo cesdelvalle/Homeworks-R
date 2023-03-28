@@ -1,0 +1,52 @@
+```{r}
+TABLA_HW3 <- file.choose()
+dataset_results <- read.csv(TABLA_HW3)
+dataset_results
+```
+```{r}
+library(dplyr)
+```
+
+```{r}
+# 1.Filtrar todos los votos del estado de Florida
+dataset_results_1 <- dataset_results %>%
+  filter(state == "Florida")
+dataset_results_1
+```
+```{r}
+#2.1. Filtrar votos para los candidatos Hillary Clinton o Donald Trump
+dataset_results_2.1 <- dataset_results %>%
+  filter(candidate == "Hillary Clinton" | candidate == "Donald Trump")
+dataset_results_2.1
+```
+```{r}
+#2.2. Filtrar votos para el partido Demócrata y el condado Shelby
+dataset_results_2.2 <- dataset_results %>%
+  filter(party == "Democrat" & county == "Shelby")
+dataset_results_2.2 
+```
+```{r}
+#2.3. Filtrar votos para el estado de Alabama y que la cantidad de votos sea mayor a 15000.
+dataset_results_2.3 <- dataset_results %>%
+  filter(state == "Alabama" & votes > 15000)
+dataset_results_2.3
+```
+```{r}
+#3.1. Filtrar votos para el estado de Texas y el condado Denton, seleccionando únicamente las columnas party, candidate, votes, luego ordene de forma descendente por la columna votes.
+dataset_results_3.1 <- dataset_results %>%
+  filter(state == "Texas" & county == "Denton") %>%
+  select(party, candidate, votes) %>%
+  arrange(desc(votes))
+dataset_results_3.1
+
+```
+```{r}
+#4.1 Filtrar por el partido Republicano, que el candidato sea Ted Cruz en el estado de Alaska, luego agregue una columna que se llame vote_count que sea la división de votes por fraction_votes (votes/fraction_votes), finalmente ordene de forma descendente por vote_count.
+dataset_results_4.1 <- dataset_results %>%
+  filter(state == "Alaska" & party == "Republican" & candidate == "Ted Cruz") %>%
+  mutate(vote_count = votes/fraction_votes) %>%
+  arrange(desc(vote_count))
+dataset_results_4.1
+
+```
+
