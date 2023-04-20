@@ -1,0 +1,124 @@
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+diamonds <- file.choose()
+diamonds <- read.csv(diamonds)
+str(diamonds)
+```
+```{r}
+#1.1. Construya un gráfico de dispersión colocando en la estética carat (eje x) versus price (eje y), luego devuelva el gráfico.
+
+
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point()
+```
+
+
+
+```{r}
+#1.2. Edite la estética y mapee el color con la variable clarity.
+#1.3. Devuelva el gráfico con esta modificación.
+
+ggplot(diamonds, aes(x = carat, y = price, color = clarity)) +
+  geom_point()
+```
+```{r}
+#2.1. Construya el tipo de geometría histograma para la variable price. Configure el parámetro bins con el valor 40 y devuelva el gráfico.
+
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram(binwidth = 40)
+```
+```{r}
+#2.2. Agregue una escala logarítmica de base 10 y devuelva el gráfico para ver la diferencia.
+
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram(binwidth = 40) +
+  scale_y_log10()
+
+```
+
+```{r}
+#3.1. Construya un gráfico de cajas colocando en la estética la variable cut (eje x) versus price (eje y). Agregue una escala logarítmica por defecto y por último devuelva el gráfico.
+
+ggplot(diamonds, aes(x = cut, y = price)) +
+  geom_boxplot() +
+  scale_y_log10()
+
+```
+```{r}
+#3.2. Edite el color de cada caja con el parámetro fill dentro de la estética y asignando la variable cut. Por último devuelva el gráfico.
+
+ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
+  geom_boxplot() +
+  scale_y_log10()
+
+```
+```{r}
+#4.1. Filtre diamonds por la variable price que sea mayor a 1000 y por cut que contenga las categorías Good, Ideal y Premium. Luego asigne el resultado a la variable filtered_price. Dado que cut debe tomar en cuenta tres categorías específicas puede hacer uso del pipe %in% , a continuación un ejemplo de su uso:
+
+filtered_price <- diamonds %>%
+  filter(price > 1000, cut %in% c("Good", "Ideal", "Premium"))
+
+```
+```{r}
+#4.2. Utilice la variable filtered_price para construir un gráfico de barras, en la estética configure x = cut, y = depth.
+
+ggplot(filtered_price, aes(x = cut, y = depth)) +
+  geom_bar(stat = "identity")
+
+```
+```{r}
+#4.3. Por último aplique faceting para la variable clarity y devuelva la parcela de gráficos.
+
+ggplot(filtered_price, aes(x = cut, y = depth)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ clarity)
+
+```
+```{r}
+#4.4. Edite la estética y configure el parámetro fill con la variable clarity. Luego devuelva la parcela de gráficos con esta modificación.
+
+ggplot(filtered_price, aes(x = cut, y = depth, fill = clarity)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ clarity)
+
+```
+```{r}
+#Utilice diamonds para construir un agrupamiento por la variable cut, luego aplique summarize para encontrar la media de las variables x, y, z (los nombres de los valores sumarizados serán mediaX, mediaY, mediaZ, respectivamente). Asigne el resultado a la variable median_dimension_diamond, por último imprima la variable.
+
+median_dimension_diamond <- diamonds %>%
+  group_by(cut) %>%
+  summarize(mediaX = mean(x),
+            mediaY = mean(y),
+            mediaZ = mean(z))
+
+median_dimension_diamond
+
+```
+```{r}
+#Utilice diamonds para filtrar por la variable cut igual a Premium. Luego agrupe por la variable clarity y utilice summarize para encontrar minimo y maximo de price (los nombres de los valores sumarizados serán minPrice y maxPrice, respectivamente) Asigne el resultado a la variable cut_premium e imprima el valor de la variable.
+
+cut_premium <- diamonds %>%
+  filter(cut == "Premium") %>%
+  group_by(clarity) %>%
+  summarize(minPrice = min(price),
+            maxPrice = max(price))
+
+cut_premium
+```
+```{r}
+#Construya un gráfico de barras y utilice cut_premium como set de datos, configure x=clarity, y=maxPrice y el color de relleno (fill) con la variable clarity. Por último devuelva el gráfico.
+
+ggplot(cut_premium, aes(x = clarity, y = maxPrice, fill = clarity)) +
+  geom_bar(stat = "identity") +
+  xlab("Clarity") +
+  ylab("Max Price") +
+  ggtitle("Max Price by Clarity") 
+  
+
+```
+
+
