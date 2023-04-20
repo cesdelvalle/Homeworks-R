@@ -10,13 +10,9 @@ str(diamonds)
 ```
 ```{r}
 #1.1. Construya un gráfico de dispersión colocando en la estética carat (eje x) versus price (eje y), luego devuelva el gráfico.
-
-
 ggplot(diamonds, aes(x = carat, y = price)) +
   geom_point()
 ```
-
-
 
 ```{r}
 #1.2. Edite la estética y mapee el color con la variable clarity.
@@ -118,7 +114,6 @@ ggplot(cut_premium, aes(x = clarity, y = maxPrice, fill = clarity)) +
   ylab("Max Price") +
   ggtitle("Max Price by Clarity") 
   
-
 ```
 
 
