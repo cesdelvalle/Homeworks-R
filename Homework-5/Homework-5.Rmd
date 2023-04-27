@@ -1,0 +1,120 @@
+```{r}
+library(dplyr)
+library(tidyverse)
+questions <- read.csv("questions.csv")
+answers <- read.csv("answers.csv")
+tags <- read.csv("tags.csv")
+question_tags <- read.csv("question_tags.csv")
+```
+
+```{r}
+#1.1. Relacione questions y question_tags usando las columnas id y question_id, respectivamente.
+
+questions %>%
+    left_join(question_tags, by = c("id" = "question_id"))
+
+```
+
+```{r}
+#1.2. Agregue una relación más para la tabla tags.
+
+questions %>%
+  left_join(question_tags, by = c("id" = "question_id")) %>%
+  left_join(tags, by = "id")
+
+```
+```{r}
+#1.3. Utilice replace_na para cambiar los NA en la columna tag_name a "only-r".
+#1.4. Por último, almacene el resultado en la variable questions_with_tags.
+
+questions_with_tags <- questions %>%
+  left_join(question_tags, by = c("id" = "question_id")) %>%
+  left_join(tags, by = "id")
+
+questions_with_tags <- questions_with_tags %>%
+  mutate(tag_name = replace_na(tag_name, "only-r"))
+
+```
+
+```{r}
+#2.1. Utilice questions_with_tags y aplique group_by para la variable tag_name.
+
+questions_with_tags %>%
+  group_by(tag_name) 
+
+```
+
+
+```{r}
+#2.2. Aplique summarize para obtener el score promedio de cada pregunta y asígnele el nombre mean_score.
+
+questions_with_tags %>%
+  group_by(tag_name) %>%
+  summarize(mean_score = mean(score))
+```
+```{r}
+#2.3. Ordene mean_score en forma descendente.
+
+questions_with_tags %>%
+  group_by(tag_name) %>%
+  summarize(mean_score = mean(score)) %>%
+  arrange(desc(mean_score))
+
+```
+```{r}
+# 3.1. Utilice inner_join para combinar las tablas questions y answers, luego aplique los sufijos "_question" y "_answer", respectivamente.
+
+questions %>%
+  inner_join(answers, by = c("id" = "question_id"), suffix = c("_question", "_answer"))
+
+```
+```{r}
+
+# 3.2. Agregue una nueva columna utilizando la función mutate. La nueva columna se llamará gap y contendrá la resta de creation_date_answer y creation_date_question. (creation_date_answer - creation_date_question).
+
+questions %>%
+  inner_join(answers, by = c("id" = "question_id"), suffix = c("_question", "_answer")) %>%
+  mutate(gap = difftime(creation_date_answer, creation_date_question, units = "days"))
+```
+```{r}
+#4.1. Cuente y ordene la columna question_id en la tabla de answers, luego almacene elresultado en la variable answer_counts.
+
+answer_counts <- answers %>%
+  count(question_id) %>%
+  arrange(question_id)
+
+```
+```{r}
+#4.2. Relacione la tabla questions con answer_counts (utilice left_join)
+questions %>%
+  left_join(answer_counts, by = c("id" = "question_id"))
+
+```
+
+```{r}
+#4.3. Reemplace los valores NA en la columna n con ceros.
+#4.4. Por último almacene el resultado en la variable question_answer_counts
+
+
+question_answer_counts <- questions %>%
+  left_join(answer_counts, by = c("id" = "question_id"))%>%
+  mutate(n = if_else(is.na(n), 0, n))
+
+```
+
+```{r}
+#5.1. Combine question_tags con question_answer_counts usando inner_join.
+
+question_answer_counts %>%
+  inner_join(question_tags, by = c("id" = "question_id"))
+
+```
+
+```{r}
+#5.2. Ahora, use otro inner_join para agregar la tabla tags.
+
+question_answer_counts %>%
+  inner_join(question_tags, by = c("id" = "question_id")) %>%
+  inner_join(tags, by = "id")
+```
+
